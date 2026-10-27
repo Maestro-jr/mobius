@@ -1,0 +1,6 @@
+# Pinned so a worker image is reproducible and its advisories are trackable.
+# Bump deliberately: a security tool shipping a stale parser is the worst look.
+# lief: Apache-2.0: reads Mach-O load commands, encryption info, code signature
+# and imported symbols. Invoked only inside this container, never imported by the
+# engine. plistlib is the standard library, so it is not listed here.
+lief==0.16.6

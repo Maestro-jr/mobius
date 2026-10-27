@@ -1,0 +1,11 @@
+# MobSF is pulled, not built. Locked decision 11: it is reached over its REST
+# API, in its own container, and never imported or vendored. Rebuilding it here
+# would be vendoring it in all but name, and would put themob in the business
+# of maintaining someone else's GPL server.
+#
+# Pinned by digest. A tag is a moving pointer and "v4.3.2" can be repushed under
+# the same name; a digest cannot. This is the multi-arch index digest, so it
+# resolves on amd64 and arm64 alike.
+#
+# opensecurity/mobile-security-framework-mobsf:v4.3.2
+opensecurity/mobile-security-framework-mobsf@sha256:3cebb848bee5dceadede1a47d6880dc352cdeb89b3b3b8fe12e5726a265fcea7

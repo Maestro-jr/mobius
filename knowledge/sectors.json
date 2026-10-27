@@ -1,0 +1,67 @@
+{
+  "about": "Sector signals and the regulations each sector likely triggers. ADVISORY ONLY: this maps where to look, it is not legal advice or a certification. Entries marked certainty=verify need confirmation with counsel before anyone relies on them.",
+  "sectors": {
+    "fintech": {
+      "signals": ["bank", "banking", "pay", "payment", "wallet", "money", "loan", "credit", "finance", "fintech", "momo", "mobilemoney", "transfer", "card", "stripe", "flutterwave", "paystack", "plaid", "android.permission.USE_BIOMETRIC"],
+      "obligations": [
+        {"framework": "PCI DSS v4.0", "jurisdiction": "global (card data)", "applies_because": "the app handles, stores or transmits payment card data", "masvs_categories": ["MASVS-STORAGE", "MASVS-CRYPTO", "MASVS-NETWORK"], "certainty": "established"},
+        {"framework": "Law No. 2010/012 on cybersecurity and cybercriminality", "jurisdiction": "Cameroon", "applies_because": "electronic communications and services offered in Cameroon", "masvs_categories": ["MASVS-NETWORK", "MASVS-CRYPTO", "MASVS-AUTH"], "certainty": "established"},
+        {"framework": "Law No. 2024/017 on the protection of personal data", "jurisdiction": "Cameroon", "applies_because": "processing personal data of people in Cameroon", "masvs_categories": ["MASVS-STORAGE", "MASVS-PRIVACY"], "certainty": "verify"},
+        {"framework": "CEMAC Regulation No. 04/18/CEMAC/UMAC/COBAC on payment services", "jurisdiction": "CEMAC zone", "applies_because": "payment or e-money services in the CEMAC zone", "masvs_categories": ["MASVS-AUTH", "MASVS-STORAGE", "MASVS-RESILIENCE"], "certainty": "verify"},
+        {"framework": "GDPR", "jurisdiction": "EU / EEA users", "applies_because": "personal data of people in the EU", "masvs_categories": ["MASVS-STORAGE", "MASVS-PRIVACY"], "certainty": "established"}
+      ]
+    },
+    "health": {
+      "signals": ["health", "medical", "clinic", "patient", "doctor", "pharmacy", "hospital", "fitness", "android.permission.BODY_SENSORS", "android.permission.ACTIVITY_RECOGNITION", "healthconnect"],
+      "obligations": [
+        {"framework": "HIPAA Security Rule", "jurisdiction": "United States", "applies_because": "protected health information handled for a covered entity or business associate", "masvs_categories": ["MASVS-STORAGE", "MASVS-CRYPTO", "MASVS-AUTH"], "certainty": "established"},
+        {"framework": "Law No. 2024/017 on the protection of personal data (health data is sensitive)", "jurisdiction": "Cameroon", "applies_because": "health data of people in Cameroon", "masvs_categories": ["MASVS-STORAGE", "MASVS-PRIVACY"], "certainty": "verify"},
+        {"framework": "GDPR Article 9 (special category data)", "jurisdiction": "EU / EEA users", "applies_because": "health data of people in the EU", "masvs_categories": ["MASVS-STORAGE", "MASVS-PRIVACY", "MASVS-CRYPTO"], "certainty": "established"}
+      ]
+    },
+    "education": {
+      "signals": ["school", "student", "learn", "learning", "education", "course", "class", "teacher", "exam", "edu", "university"],
+      "obligations": [
+        {"framework": "FERPA", "jurisdiction": "United States", "applies_because": "student education records from a US institution", "masvs_categories": ["MASVS-STORAGE", "MASVS-PRIVACY", "MASVS-AUTH"], "certainty": "established"},
+        {"framework": "Law No. 2024/017 on the protection of personal data", "jurisdiction": "Cameroon", "applies_because": "student personal data in Cameroon", "masvs_categories": ["MASVS-STORAGE", "MASVS-PRIVACY"], "certainty": "verify"},
+        {"framework": "GDPR", "jurisdiction": "EU / EEA users", "applies_because": "personal data of people in the EU", "masvs_categories": ["MASVS-STORAGE", "MASVS-PRIVACY"], "certainty": "established"}
+      ]
+    },
+    "kids": {
+      "signals": ["kids", "kid", "child", "children", "junior", "toddler", "parental", "family"],
+      "obligations": [
+        {"framework": "COPPA", "jurisdiction": "United States", "applies_because": "the app is directed at children under 13", "masvs_categories": ["MASVS-PRIVACY", "MASVS-STORAGE", "MASVS-NETWORK"], "certainty": "established"},
+        {"framework": "GDPR Article 8 (child consent)", "jurisdiction": "EU / EEA users", "applies_because": "information society services offered to children", "masvs_categories": ["MASVS-PRIVACY"], "certainty": "established"},
+        {"framework": "Google Play Families Policy", "jurisdiction": "Google Play", "applies_because": "apps targeting children on Google Play", "masvs_categories": ["MASVS-PRIVACY", "MASVS-NETWORK"], "certainty": "established"}
+      ]
+    },
+    "ecommerce": {
+      "signals": ["shop", "store", "cart", "checkout", "order", "delivery", "market", "commerce", "retail"],
+      "obligations": [
+        {"framework": "PCI DSS v4.0", "jurisdiction": "global (card data)", "applies_because": "card payments in checkout", "masvs_categories": ["MASVS-STORAGE", "MASVS-NETWORK"], "certainty": "established"},
+        {"framework": "Law No. 2010/021 governing electronic commerce", "jurisdiction": "Cameroon", "applies_because": "electronic commerce offered in Cameroon", "masvs_categories": ["MASVS-NETWORK", "MASVS-PRIVACY"], "certainty": "verify"},
+        {"framework": "GDPR", "jurisdiction": "EU / EEA users", "applies_because": "customer personal data of people in the EU", "masvs_categories": ["MASVS-STORAGE", "MASVS-PRIVACY"], "certainty": "established"}
+      ]
+    },
+    "government": {
+      "signals": ["gov", "government", "ministry", "citizen", "tax", "identity", "id", "passport", "election"],
+      "obligations": [
+        {"framework": "Law No. 2010/012 on cybersecurity and cybercriminality", "jurisdiction": "Cameroon", "applies_because": "public electronic services in Cameroon", "masvs_categories": ["MASVS-NETWORK", "MASVS-AUTH", "MASVS-CRYPTO"], "certainty": "established"},
+        {"framework": "African Union Convention on Cyber Security and Personal Data Protection (Malabo)", "jurisdiction": "ratifying AU states", "applies_because": "personal data processing by public bodies", "masvs_categories": ["MASVS-PRIVACY", "MASVS-STORAGE"], "certainty": "verify"}
+      ]
+    },
+    "social": {
+      "signals": ["chat", "message", "messaging", "social", "friend", "feed", "post", "community", "dating"],
+      "obligations": [
+        {"framework": "Law No. 2024/017 on the protection of personal data", "jurisdiction": "Cameroon", "applies_because": "user communications and profiles in Cameroon", "masvs_categories": ["MASVS-PRIVACY", "MASVS-STORAGE"], "certainty": "verify"},
+        {"framework": "GDPR", "jurisdiction": "EU / EEA users", "applies_because": "personal data of people in the EU", "masvs_categories": ["MASVS-PRIVACY", "MASVS-STORAGE", "MASVS-NETWORK"], "certainty": "established"}
+      ]
+    },
+    "general": {
+      "signals": [],
+      "obligations": [
+        {"framework": "OWASP MASVS L1 baseline", "jurisdiction": "industry standard", "applies_because": "any app handling user data", "masvs_categories": ["MASVS-STORAGE", "MASVS-NETWORK", "MASVS-PLATFORM", "MASVS-CODE"], "certainty": "established"}
+      ]
+    }
+  }
+}

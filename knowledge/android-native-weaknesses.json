@@ -1,0 +1,44 @@
+{
+  "$comment": "Native (.so) binary hardening weaknesses. These are build-time exploit mitigations that are either present or forgotten; the nativelib worker reads the ELF headers and the adapter turns the absence of a mitigation into one of these. Severities are deliberately conservative: a missing mitigation is not itself a vulnerability, it is a weakened defence that makes an unrelated memory bug more exploitable, so these confirm and rank rather than accuse. maswe_id stays null for the same reason as the rest of the pack: unverified from here.",
+  "weaknesses": [
+    {
+      "key": "android.native.executable-stack",
+      "title": "Native library has an executable stack",
+      "severity": "medium",
+      "masvs_category": "MASVS-CODE",
+      "masvs_control": "MASVS-CODE-4",
+      "description": "A shared object marks its stack executable (a writable and executable GNU_STACK segment). This removes one of the oldest exploit mitigations: with a writable, executable stack, data an attacker controls on the stack can be run as code, which turns a stack buffer overflow directly into code execution.",
+      "remediation": "Rebuild the library without an executable stack. This is almost always an accident from hand-written assembly or an old toolchain; add '.section .note.GNU-stack' to assembly sources or pass -Wl,-z,noexecstack at link time.",
+      "cwe": "CWE-693",
+      "maswe_id": null,
+      "mobile_top10": "M7",
+      "references": ["https://mas.owasp.org/MASVS/09-MASVS-CODE/"]
+    },
+    {
+      "key": "android.native.no-relro",
+      "title": "Native library has no RELRO",
+      "severity": "low",
+      "masvs_category": "MASVS-CODE",
+      "masvs_control": "MASVS-CODE-4",
+      "description": "The library has no GNU_RELRO segment, so its Global Offset Table stays writable after loading. An attacker with an arbitrary write can redirect a GOT entry to hijack control flow. Full RELRO (RELRO plus eager binding) marks the GOT read-only once relocations are done and closes that technique.",
+      "remediation": "Link with -Wl,-z,relro,-z,now for full RELRO. The NDK enables this by default, so its absence usually points at a custom or outdated build.",
+      "cwe": "CWE-693",
+      "maswe_id": null,
+      "mobile_top10": "M7",
+      "references": ["https://mas.owasp.org/MASVS/09-MASVS-CODE/"]
+    },
+    {
+      "key": "android.native.no-stack-canary",
+      "title": "Native library shows no stack-protector symbols",
+      "severity": "info",
+      "masvs_category": "MASVS-CODE",
+      "masvs_control": "MASVS-CODE-4",
+      "description": "No stack-protector symbols (__stack_chk_fail) were found in the library, which suggests it was compiled without stack canaries. Canaries detect a classic stack buffer overflow before the overwritten return address is used. This is reported at INFO because a library with no vulnerable functions legitimately carries no canary, so it is a prompt to check the build flags rather than a defect on its own.",
+      "remediation": "Build with -fstack-protector-strong. The NDK sets this by default; its absence usually means a custom toolchain or explicit opt-out.",
+      "cwe": "CWE-693",
+      "maswe_id": null,
+      "mobile_top10": "M7",
+      "references": ["https://mas.owasp.org/MASVS/09-MASVS-CODE/"]
+    }
+  ]
+}

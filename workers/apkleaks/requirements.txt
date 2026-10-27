@@ -1,0 +1,7 @@
+# Pinned so a worker image is reproducible and its advisories are trackable.
+# Bump deliberately: a security tool shipping a stale scanner is the worst look.
+# apkleaks: MIT. Invoked as a subprocess, never imported by the engine.
+apkleaks==2.6.3
+# apkleaks' own dependencies, pinned here so the worker does not inherit
+# floating transitive versions between builds.
+pyaxmlparser==0.3.31

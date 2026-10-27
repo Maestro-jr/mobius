@@ -1,0 +1,20 @@
+# gitleaks configuration for themob's own CI.
+#
+# themob's test suite contains deliberately fake credentials: the report tests
+# assert that a secret value never reaches an export, so they carry a sample AWS
+# key to prove it is stripped. Those are not leaks, and a scanner that flags
+# them trains everyone to ignore it. So the tests and the knowledge packs are
+# allowlisted; everything else, the actual engine, is scanned normally.
+
+title = "themob"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Test fixtures and knowledge data hold sample, non-live values."
+paths = [
+  'tests/.*',
+  'knowledge/.*',
+  'themob/dynamic/agents/.*',
+]

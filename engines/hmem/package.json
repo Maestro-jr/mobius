@@ -1,0 +1,12 @@
+{
+  "name": "mobius-hmem-conformance",
+  "private": true,
+  "type": "module",
+  "description": "Runs the official Meterless H-MEM conformance suite against mobius's Python H-MEM engine.",
+  "scripts": {
+    "conformance": "node scripts/run-conformance.mjs"
+  },
+  "devDependencies": {
+    "tsx": "4.19.2"
+  }
+}

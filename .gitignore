@@ -1,0 +1,61 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+
+# Tests / tooling
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# themob runtime state: never commit an analysis workspace: it holds the
+# uploaded sample, decompiled code, and findings that include real secrets.
+.themob/
+*.db
+*.db-wal
+*.db-shm
+crash.log
+
+# Never commit a third-party app package. The test fixture is generated
+# (tests/fixtures/), so nothing here needs one.
+*.apk
+*.xapk
+*.apkm
+*.ipa
+*.aab
+
+# Hackathon: never commit secrets. Keep sponsor and model keys (Nightshift /
+# Meterless, Zetaris, NVIDIA, Gemini, ...) in a local .env; the only thing that
+# ships is .env.example, with placeholder values.
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# JVM crash dumps (large, not source).
+hs_err_pid*.log
+replay_pid*.log
+
+# The MOB artwork is a source asset, not build output. It ships.
+!themob/app/assets/*.png
+
+# Editors / OS
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Staged into a worker's build context by themob.sandbox.build, because
+# Docker cannot COPY from outside the context. The canonical copy lives
+# in knowledge/semgrep/.
+workers/semgrep/rules/
+
+# Node tooling for the H-MEM conformance runner.
+node_modules/

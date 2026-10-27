@@ -1,0 +1,7 @@
+# Pinned so a worker image is reproducible and its advisories are trackable.
+# Bump deliberately: a security tool shipping a stale parser is the worst look.
+# androguard: Apache-2.0: permissive, but still invoked arms-length in a sandbox.
+androguard==4.1.4
+# Certificate parsing for the signing block (androguard already depends on it;
+# pinned here so the worker does not inherit a floating transitive version).
+asn1crypto==1.5.1

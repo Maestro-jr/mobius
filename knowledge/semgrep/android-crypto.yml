@@ -1,0 +1,58 @@
+# themob semgrep rules: cryptographic misuse in decompiled Android code.
+#
+# These live in knowledge/ beside the weakness packs, where the build plan's
+# section 13 puts "semgrep rule packs". They are baked into the worker image at
+# build time: the container runs with no network and cannot reach the semgrep
+# registry, so a rule that is not in the image is a rule that never runs.
+#
+# Every rule carries `metadata.themob-weakness`, and that value has to be a key
+# in knowledge/android-weaknesses.json. The adapter maps on that field rather
+# than on the rule id, so themob's finding identity never depends on what a rule
+# happens to be called. tests/test_semgrep.py asserts every rule here resolves.
+#
+# Scope note: these run over jadx's output, not over original source. Decompiled
+# Java keeps method calls and string literals intact, which is what these match,
+# but it loses local variable names and some control flow. Rules that depend on
+# dataflow between variables are not worth writing against this input yet.
+
+rules:
+  - id: themob-weak-cipher-mode
+    languages: [java]
+    severity: ERROR
+    message: >-
+      Block cipher requested in ECB mode. ECB encrypts identical plaintext
+      blocks to identical ciphertext blocks, so structure survives encryption
+      and an attacker can often recover or rearrange content without breaking
+      the key.
+    metadata:
+      themob-weakness: android.crypto.weak-cipher-mode
+      confidence: HIGH
+    patterns:
+      - pattern-either:
+          - pattern: javax.crypto.Cipher.getInstance($TRANSFORM, ...)
+          - pattern: Cipher.getInstance($TRANSFORM, ...)
+      - metavariable-regex:
+          metavariable: $TRANSFORM
+          # The mode sits between the algorithm and the padding, so match it
+          # as a delimited segment rather than anywhere in the string: "ECB"
+          # unanchored would also hit an algorithm named something like
+          # "ECBSomething", and a cipher named after the mode is not the mode.
+          regex: (?i)^"[A-Z0-9_]+/ECB(/.*)?"$
+
+  - id: themob-weak-hash
+    languages: [java]
+    severity: WARNING
+    message: >-
+      Broken hash function requested. MD5 and SHA-1 both have practical
+      collision attacks, so neither can support a signature, an integrity check
+      or a deduplication key an attacker has reason to subvert.
+    metadata:
+      themob-weakness: android.crypto.weak-hash
+      confidence: HIGH
+    patterns:
+      - pattern-either:
+          - pattern: java.security.MessageDigest.getInstance($ALGO, ...)
+          - pattern: MessageDigest.getInstance($ALGO, ...)
+      - metavariable-regex:
+          metavariable: $ALGO
+          regex: (?i)^"(MD2|MD4|MD5|SHA|SHA-?1)"$

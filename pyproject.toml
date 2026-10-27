@@ -1,0 +1,84 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "themob"
+version = "1.0.0"
+description = "Authorization-gated mobile attack-surface intelligence engine"
+readme = "README.md"
+requires-python = ">=3.11"
+# PyQt6 is GPL-3.0, so themob is GPL-3.0. If this ever has to ship closed,
+# switch the UI to PySide6 (LGPL, near-identical API), see PROGRESS.md.
+license = { text = "GPL-3.0-or-later" }
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: X11 Applications :: Qt",
+    "Intended Audience :: Information Technology",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Security",
+]
+
+dependencies = [
+    "PyQt6>=6.6",
+    "pydantic>=2.6",
+    "networkx>=3.2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-qt>=4.4",
+]
+# Ed25519 signatures for a tamper-evident deliverable. Optional: the manifest is
+# tamper-evident by checksum without it, and signing is the layer you add when a
+# report goes to someone who was not in the room.
+sign = [
+    "cryptography>=42.0",
+]
+# The Model Context Protocol server (themob mcp), so an agent can drive themob's
+# contained tools. Optional: the engine, the CLI and the window run without it;
+# only the server imports the SDK, which is why the tool logic and the SDK
+# binding are separate modules.
+mcp = [
+    "mcp>=1.27",
+]
+# The AI assistant: Claude (anthropic), or any free OpenAI-compatible provider
+# (Groq, Gemini, OpenRouter, Mistral, Cerebras, local Ollama) through the openai
+# SDK. Optional: the engine, CLI, MCP server and the rest of the window run
+# without it, and the assistant degrades to a clear message when the key or SDK
+# is absent. The (dormant) licence gate reuses the Ed25519 layer, so cryptography.
+assist = [
+    "anthropic>=0.39",
+    "openai>=1.40",
+    "cryptography>=42.0",
+]
+
+[project.scripts]
+# Through __main__, not app.main, so `themob --check` and `python -m themob
+# --check` are the same command. Pointing it straight at the GUI entry point
+# meant the console script silently ignored the flag and opened a window.
+themob = "themob.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["themob*"]
+
+[tool.setuptools.package-data]
+themob = ["storage/migrations/*.sql", "app/assets/*.png", "dynamic/agents/*.js", "dynamic/addons/*.py"]
+
+# The data packs sit at the repository root by design (build plan section 13),
+# beside workers/ and shared/, not inside the engine. A wheel still has to carry
+# them or an installed copy cannot key a single finding, so they are installed
+# under the environment's share/ and found there at runtime.
+[tool.setuptools.data-files]
+"share/themob/knowledge" = ["knowledge/*.json"]
+"share/themob/knowledge/semgrep" = ["knowledge/semgrep/*.yml"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "docker: end-to-end tests that need a running Docker daemon and built worker images",
+]
+filterwarnings = ["error::DeprecationWarning:themob.*"]
